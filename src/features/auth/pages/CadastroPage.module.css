@@ -1,0 +1,73 @@
+/* src/features/auth/pages/CadastroPage.module.css */
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+}
+
+.modal {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px; /* Um pouco mais largo que o login para acomodar mais campos */
+  display: flex;
+  flex-direction: column;
+}
+
+.modal h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.fieldGroup label {
+  margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+}
+
+.fieldGroup input {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.fieldGroup input:focus {
+  border-color: #28a745; /* Cor verde para diferenciar do login */
+  outline: none;
+}
+
+.saveButton {
+  padding: 12px;
+  background-color: #28a745; /* Verde para ação de cadastro/salvar */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+.saveButton:hover {
+  background-color: #218838;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+}
