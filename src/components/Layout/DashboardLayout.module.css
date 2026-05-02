@@ -1,0 +1,52 @@
+.container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* Conteúdo principal (esquerda/centro) */
+.mainContent {
+  flex: 1;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  overflow-y: auto;
+}
+
+/* Aba lateral DIREITA conforme solicitado */
+.sidebar {
+  width: 260px;
+  background-color: #ffffff;
+  border-left: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  box-shadow: -2px 0 5px rgba(0,0,0,0.05);
+}
+
+.sidebar h3 {
+  margin-bottom: 2rem;
+  color: #333;
+  font-size: 1.2rem;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 0.5rem;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.navLink {
+  text-decoration: none;
+  color: #555;
+  padding: 12px;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.navLink:hover {
+  background-color: #e9ecef;
+  color: #007bff;
+}

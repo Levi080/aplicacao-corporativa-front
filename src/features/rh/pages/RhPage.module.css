@@ -1,0 +1,89 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Container que segura a barra e os botões */
+.topControls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.searchGroup {
+    display: flex;
+    flex: 1;
+    /* Faz a busca ocupar o espaço disponível */
+    gap: 8px;
+    max-width: 600px;
+}
+
+.searchBar {
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.searchButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.searchButton:hover {
+    background-color: #0056b3;
+}
+
+.addButton {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    white-space: nowrap;
+    /* Impede o texto do botão de quebrar */
+    transition: background 0.2s;
+}
+
+.addButton:hover {
+    background-color: #218838;
+}
+
+/* Grid/Table styles permanecem os mesmos do exemplo anterior */
+.gridContainer {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
