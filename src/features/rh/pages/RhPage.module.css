@@ -88,7 +88,33 @@
     font-weight: 600;
 }
 
+.actionsContainer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
 
+.editButton, .deleteButton {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+/* Efeito ao passar o mouse no botão editar */
+.editButton:hover {
+  background-color: #e3f2fd;
+  transform: scale(1.1);
+}
+
+/* Efeito ao passar o mouse no botão excluir */
+.deleteButton:hover {
+  background-color: #ffebee;
+  transform: scale(1.1);
+}
 
 
 /* ----------=-------------------------POP UP----------------------------------------------------- */

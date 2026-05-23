@@ -74,6 +74,57 @@ export const createPerson = createAsyncThunk(
   },
 );
 
+export const updatePerson = createAsyncThunk(
+  "people/updatePerson",
+  async (
+    updatedPerson: {
+      pessoaId: number;
+      nome: string;
+      cpf: string;
+      nascimento: string;
+      telefone: string;
+      pessoaTipoId: number;
+      atualizadoPor: number;
+    },
+    { rejectWithValue, dispatch },
+  ) => {
+    try {
+      const response = await axios.put(
+        `${API_URL}/Pessoa/atualizar`,
+        updatedPerson,
+      );
+
+      // Atualiza a tabela chamando a listagem novamente
+      dispatch(fetchPeople());
+
+      return response.data;
+    } catch (err: any) {
+      return rejectWithValue(
+        err.response?.data?.mensagem || "Erro ao editar pessoa",
+      );
+    }
+  },
+);
+
+export const deletePerson = createAsyncThunk(
+  "people/deletePerson",
+  async (pessoaId: number, { rejectWithValue, dispatch }) => {
+    try {
+      // Passando o ID direto na URL por interpolação
+      const response = await axios.delete(`${API_URL}/Pessoa/${pessoaId}`);
+
+      // Após excluir com sucesso, atualiza a listagem da tabela automaticamente
+      dispatch(fetchPeople());
+
+      return response.data;
+    } catch (err: any) {
+      return rejectWithValue(
+        err.response?.data?.mensagem || "Erro ao excluir pessoa",
+      );
+    }
+  },
+);
+
 // 3. O SLICE
 const peopleSlice = createSlice({
   name: "people",
@@ -106,7 +157,31 @@ const peopleSlice = createSlice({
       .addCase(createPerson.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+
+      .addCase(updatePerson.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updatePerson.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(updatePerson.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      
+      .addCase(deletePerson.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deletePerson.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(deletePerson.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
-  }, 
+  },
 });
 export default peopleSlice.reducer;
