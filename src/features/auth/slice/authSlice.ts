@@ -1,10 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// 1. Puxa a URL do seu arquivo .env
 const API_URL = import.meta.env.VITE_API_URL;
 
-// 2. Interface do que a sua API devolve no JSON de sucesso
 interface LoginResponse {
   mensagem: string;
   usuarioId: number;
@@ -12,7 +10,6 @@ interface LoginResponse {
   email: string;
 }
 
-// 3. Interface de como o Redux vai guardar os dados na memória do Front
 interface AuthState {
   user: {
     id: number;
@@ -24,46 +21,59 @@ interface AuthState {
   signed: boolean;
 }
 
-// Verifica se já existe um usuário logado salvo no navegador
 const savedUserId = localStorage.getItem('@App:userId');
 
 const initialState: AuthState = {
-  user: null, // Começa nulo até o login responder com sucesso
+  user: null,
   loading: false,
   error: null,
-  signed: !!savedUserId, // Se achar um ID salvo, assume que está logado
+  signed: !!savedUserId,
 };
 
-// 4. ACTION ASSÍNCRONA: Faz o POST para a sua API enviando email e senha
+// ACTION 1: Login
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async (credentials: { email: string; senha: string }, { rejectWithValue }) => {
     try {
       const response = await axios.post<LoginResponse>(
-        `${API_URL}/Auth/login`, 
+        `${API_URL}/Auth/login`, // ajuste para sua rota se necessário (ex: /api/Auth/login)
         {
           email: credentials.email,
           senha: credentials.senha
         }
       );
-      
-      // Salva o ID do usuário no navegador para não deslogar ao atualizar a página
       localStorage.setItem('@App:userId', String(response.data.usuarioId));
-      
-      return response.data; // Envia o JSON de resposta para o extraReducers abaixo
+      return response.data;
     } catch (err: any) {
-      // Se der erro (status 400, 401, etc), pega a mensagem do seu JSON de erro
       return rejectWithValue(err.response?.data?.mensagem || 'Erro ao tentar fazer login');
     }
   }
 );
 
-// 5. SLICE: Gerencia o estado (carregando, sucesso ou erro)
+// ACTION 2: Cadastro de Usuário Novo
+export const registerUser = createAsyncThunk(
+  'auth/registerUser',
+  async (userData: { nome: string; email: string; senha: string }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post<{ mensagem: string }>(
+        `${API_URL}/Auth/registrar`,
+        {
+          nome: userData.nome,
+          email: userData.email,
+          senha: userData.senha
+        }
+      );
+      return response.data;
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data?.mensagem || 'Erro ao tentar cadastrar usuário');
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    // Função para quando o usuário clicar em "Sair"
     logout: (state) => {
       localStorage.clear();
       state.user = null;
@@ -73,12 +83,11 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // 1ª Etapa: Enquanto a requisição está rodando...
+      // Reducers do Login
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      // 2ª Etapa: Se a API responder com sucesso (Status 200)
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = {
@@ -88,10 +97,22 @@ const authSlice = createSlice({
         };
         state.signed = true;
       })
-      // 3ª Etapa: Se a API der algum erro
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string; // Guarda a mensagem para mostrar na tela
+        state.error = action.payload as string;
+      })
+      
+      // Reducers do Cadastro
+      .addCase(registerUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(registerUser.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
   },
 });
